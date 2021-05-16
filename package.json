@@ -5,7 +5,8 @@
     "main": "app.js",
     "scripts": {
         "start": "node app.js",
-        "dev": "nodemon app.js"
+        "dev": "nodemon app.js",
+        "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
     },
     "keywords": [
         "node",
@@ -33,5 +34,8 @@
         "nodemon": "^1.18.9",
         "uuid": "^3.3.2"
     },
-    "proxy": "http://localhost:8000"
+    "proxy": "http://localhost:8000",
+    "engines": {
+        "node": "14.16.1"
+    }
 }
