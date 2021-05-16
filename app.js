@@ -10,6 +10,7 @@ const cors = require('cors');
 const DB = "mongodb+srv://dev:bazinga@cluster0.umeqe.mongodb.net/nodeapi?retryWrites=true&w=majority"
 const dotenv = require('dotenv');
 dotenv.config();
+const path = require('path');
 
 // db
 // mongodb://kaloraat:dhungel8@ds257054.mlab.com:57054/nodeapi
@@ -26,12 +27,12 @@ dotenv.config();
 //     console.log(`DB connection error: ${err.message}`);
 // });
 mongoose.connect(DB, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology:true,
-  useFindAndModify: false
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
 }).then(() => {
-  console.log("Connection Succesful");
+    console.log("Connection Succesful");
 }).catch((err) => console.log("no coneection"))
 
 // bring in routes
@@ -65,8 +66,17 @@ app.use(function(err, req, res, next) {
         res.status(401).json({ error: 'Unauthorized!' });
     }
 });
+// ... other app.use middleware 
+app.use(express.static(path.join(__dirname, "client", "build")))
 
 const port = process.env.PORT || 8080;
+
+// ...
+// Right before your app.listen(), add this:
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
+
 app.listen(port, () => {
     console.log(`A Node Js API is listening on port: ${port}`);
 });
