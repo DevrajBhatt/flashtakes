@@ -4,6 +4,8 @@ import { isAuthenticated } from "../auth";
 import { Redirect } from "react-router-dom";
 import DefaultPost from "../images/mountains.jpg";
 
+const REACT_APP_API_URL = 'https://flashtakes.herokuapp.com/api';
+
 class EditPost extends Component {
     constructor() {
         super();
@@ -62,7 +64,10 @@ class EditPost extends Component {
 
         const fileSize = name === "photo" ? event.target.files[0].size : 0;
         this.postData.set(name, value);
-        this.setState({ [name]: value, fileSize });
+        this.setState({
+            [name]: value,
+            fileSize
+        });
     };
 
     clickSubmit = event => {
@@ -87,44 +92,46 @@ class EditPost extends Component {
         }
     };
 
-    editPostForm = (title, body) => (
-        <form>
-            <div className="form-group">
-                <label className="text-muted">Post Photo</label>
-                <input
-                    onChange={this.handleChange("photo")}
-                    type="file"
-                    accept="image/*"
-                    className="form-control"
-                />
-            </div>
-            <div className="form-group">
-                <label className="text-muted">Title</label>
-                <input
-                    onChange={this.handleChange("title")}
-                    type="text"
-                    className="form-control"
-                    value={title}
-                />
-            </div>
+    editPostForm = (title, body) => ( <
+        form >
+        <
+        div className = "form-group" >
+        <
+        label className = "text-muted" > Post Photo < /label> <
+        input onChange = { this.handleChange("photo") }
+        type = "file"
+        accept = "image/*"
+        className = "form-control" /
+        >
+        <
+        /div> <
+        div className = "form-group" >
+        <
+        label className = "text-muted" > Title < /label> <
+        input onChange = { this.handleChange("title") }
+        type = "text"
+        className = "form-control"
+        value = { title }
+        /> < /
+        div >
 
-            <div className="form-group">
-                <label className="text-muted">Body</label>
-                <textarea
-                    onChange={this.handleChange("body")}
-                    type="text"
-                    className="form-control"
-                    value={body}
-                />
-            </div>
+        <
+        div className = "form-group" >
+        <
+        label className = "text-muted" > Body < /label> <
+        textarea onChange = { this.handleChange("body") }
+        type = "text"
+        className = "form-control"
+        value = { body }
+        /> < /
+        div >
 
-            <button
-                onClick={this.clickSubmit}
-                className="btn btn-raised btn-primary"
-            >
-                Update Post
-            </button>
-        </form>
+        <
+        button onClick = { this.clickSubmit }
+        className = "btn btn-raised btn-primary" >
+        Update Post <
+        /button> < /
+        form >
     );
 
     render() {
@@ -138,44 +145,55 @@ class EditPost extends Component {
         } = this.state;
 
         if (redirectToProfile) {
-            return <Redirect to={`/user/${isAuthenticated().user._id}`} />;
+            return <Redirect to = { `/user/${isAuthenticated().user._id}` }
+            />;
         }
 
-        return (
-            <div className="container">
-                <h2 className="mt-5 mb-5">{title}</h2>
+        return ( <
+            div className = "container" >
+            <
+            h2 className = "mt-5 mb-5" > { title } < /h2>
 
-                <div
-                    className="alert alert-danger"
-                    style={{ display: error ? "" : "none" }}
-                >
-                    {error}
-                </div>
+            <
+            div className = "alert alert-danger"
+            style = {
+                { display: error ? "" : "none" }
+            } > { error } <
+            /div>
 
-                {loading ? (
-                    <div className="jumbotron text-center">
-                        <h2>Loading...</h2>
-                    </div>
+            {
+                loading ? ( <
+                    div className = "jumbotron text-center" >
+                    <
+                    h2 > Loading... < /h2> < /
+                    div >
                 ) : (
                     ""
-                )}
+                )
+            }
 
-                <img
-                    style={{ height: "200px", width: "auto" }}
-                    className="img-thumbnail"
-                    src={`${
-                        process.env.REACT_APP_API_URL
-                    }/post/photo/${id}?${new Date().getTime()}`}
-                    onError={i => (i.target.src = `${DefaultPost}`)}
-                    alt={title}
-                />
+            <
+            img style = {
+                { height: "200px", width: "auto" }
+            }
+            className = "img-thumbnail"
+            src = { `${
+                        REACT_APP_API_URL
+                    }/post/photo/${id}?${new Date().getTime()}` }
+            onError = { i => (i.target.src = `${DefaultPost}`) }
+            alt = { title }
+            />
 
-                {isAuthenticated().user.role === "admin" &&
-                    this.editPostForm(title, body)}
+            {
+                isAuthenticated().user.role === "admin" &&
+                    this.editPostForm(title, body)
+            }
 
-                {isAuthenticated().user._id === id &&
-                    this.editPostForm(title, body)}
-            </div>
+            {
+                isAuthenticated().user._id === id &&
+                    this.editPostForm(title, body)
+            } <
+            /div>
         );
     }
 }

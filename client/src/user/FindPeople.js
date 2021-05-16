@@ -4,6 +4,8 @@ import DefaultProfile from "../images/avatar.jpg";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 
+const REACT_APP_API_URL = 'https://flashtakes.herokuapp.com/api';
+
 class FindPeople extends Component {
     constructor() {
         super();
@@ -46,53 +48,60 @@ class FindPeople extends Component {
         });
     };
 
-    renderUsers = users => (
-        <div className="row">
-            {users.map((user, i) => (
-                <div className="card col-md-4" key={i}>
-                    <img
-                        style={{ height: "200px", width: "auto" }}
-                        className="img-thumbnail"
-                        src={`${process.env.REACT_APP_API_URL}/user/photo/${
+    renderUsers = users => ( <
+        div className = "row" > {
+            users.map((user, i) => ( <
+                div className = "card col-md-4"
+                key = { i } >
+                <
+                img style = {
+                    { height: "200px", width: "auto" }
+                }
+                className = "img-thumbnail"
+                src = { `${REACT_APP_API_URL}/user/photo/${
                             user._id
-                        }`}
-                        onError={i => (i.target.src = `${DefaultProfile}`)}
-                        alt={user.name}
-                    />
-                    <div className="card-body">
-                        <h5 className="card-title">{user.name}</h5>
-                        <p className="card-text">{user.email}</p>
-                        <Link
-                            to={`/user/${user._id}`}
-                            className="btn btn-raised btn-primary btn-sm"
-                        >
-                            View Profile
-                        </Link>
+                        }` }
+                onError = { i => (i.target.src = `${DefaultProfile}`) }
+                alt = { user.name }
+                /> <
+                div className = "card-body" >
+                <
+                h5 className = "card-title" > { user.name } < /h5> <
+                p className = "card-text" > { user.email } < /p> <
+                Link to = { `/user/${user._id}` }
+                className = "btn btn-raised btn-primary btn-sm" >
+                View Profile <
+                /Link>
 
-                        <button
-                            onClick={() => this.clickFollow(user, i)}
-                            className="btn btn-raised btn-info float-right btn-sm"
-                        >
-                            Follow
-                        </button>
-                    </div>
-                </div>
-            ))}
-        </div>
+                <
+                button onClick = {
+                    () => this.clickFollow(user, i)
+                }
+                className = "btn btn-raised btn-info float-right btn-sm" >
+                Follow <
+                /button> < /
+                div > <
+                /div>
+            ))
+        } <
+        /div>
     );
 
     render() {
         const { users, open, followMessage } = this.state;
-        return (
-            <div className="container">
-                <h2 className="mt-5 mb-5">Find People</h2>
+        return ( <
+            div className = "container" >
+            <
+            h2 className = "mt-5 mb-5" > Find People < /h2>
 
-                {open && (
-                    <div className="alert alert-success">{followMessage}</div>
-                )}
+            {
+                open && ( <
+                    div className = "alert alert-success" > { followMessage } < /div>
+                )
+            }
 
-                {this.renderUsers(users)}
-            </div>
+            { this.renderUsers(users) } <
+            /div>
         );
     }
 }
