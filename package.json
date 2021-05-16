@@ -34,7 +34,6 @@
         "nodemon": "^1.18.9",
         "uuid": "^3.3.2"
     },
-    "proxy": "http://localhost:8000",
     "engines": {
         "node": "14.16.1"
     }
